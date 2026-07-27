@@ -1,0 +1,425 @@
+{
+  "version": 9,
+  "system": "discohaus-identity",
+  "grid": {
+    "frameUnits": 16,
+    "slotUnits": 8,
+    "cellUnits": 2,
+    "maxCells": 5,
+    "rule": "Every sprite is an NxN grid of cells, N <= 5. Every cell is 2 units. Rendered size = 2N units, centered. N=4 fills the 8-unit slot; N=3 centers with a 1-unit margin; N=5 is reserved for the org ball, which overflows the slot by exactly 1 unit per side."
+  },
+  "tokens": {
+    "ink": "#26242e",
+    "pin": "#6f6c7c",
+    "beamMagenta": "#e05fc0",
+    "beamCyan": "#4fc9e8",
+    "avatarRadiusRatio": 0.21875,
+    "beamOpacity": 0.42,
+    "lockupBg": "#282336",
+    "lockupVignette": "#252131"
+  },
+  "pixels": {
+    "M": "#e05fc0",
+    "C": "#4fc9e8",
+    "L": "#b3b0c7",
+    "S": "#908da8",
+    "D": "#8b5e3c",
+    "G": "#55aa55",
+    "g": "#3c7f3c",
+    "V": "#8962e7",
+    "A": "#f0b429",
+    "O": "#ef8b3a",
+    "B": "#5b8def",
+    "T": "#35c4b5",
+    "R": "#ef5e70",
+    "W": "#eceaf4",
+    ".": null,
+    "v": "#6544b4"
+  },
+  "accentCycle": [
+    "M",
+    "C",
+    "V",
+    "G",
+    "A",
+    "T",
+    "B",
+    "O"
+  ],
+  "kinds": {
+    "org": {
+      "frame": "chip",
+      "pins": true
+    },
+    "product": {
+      "frame": "chip",
+      "pins": true
+    },
+    "module": {
+      "frame": "chip",
+      "pins": true
+    },
+    "client": {
+      "frame": "cartridge",
+      "pins": false
+    }
+  },
+  "entities": [
+    {
+      "id": "discohaus",
+      "kind": "org",
+      "blurb": "5x5 mirror ball: chrome with magenta and cyan facets.",
+      "source": "extracted by extract.py from the concept-art avatar",
+      "tile": {
+        "type": "pixmap",
+        "rows": [
+          ".LLL.",
+          "LMLCL",
+          "LLLLL",
+          "LLLLL",
+          ".LLL."
+        ],
+        "shade": "checker"
+      },
+      "wordmark": [
+        [
+          "disco",
+          "W"
+        ],
+        [
+          "haus",
+          "V"
+        ]
+      ]
+    },
+    {
+      "id": "discopanel",
+      "kind": "product",
+      "blurb": "Grass block: green cap, jagged boundary row, two-tone dirt.",
+      "source": "v1/v2 checker extracted by extract.py; grass-side form since v3",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          "GGGG",
+          "GDGD",
+          "DDDD",
+          "DDDD"
+        ]
+      },
+      "wordmark": [
+        [
+          "disco",
+          "W"
+        ],
+        [
+          "panel",
+          "G"
+        ]
+      ]
+    },
+    {
+      "id": "discoruntime",
+      "kind": "product",
+      "blurb": "Powered rail: gold, wood ties, redstone.",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          "ADDA",
+          "ARRA",
+          "ADDA",
+          "ARRA"
+        ]
+      },
+      "wordmark": [
+        [
+          "disco",
+          "W"
+        ],
+        [
+          "runtime",
+          "A"
+        ]
+      ]
+    },
+    {
+      "id": "discomodule",
+      "kind": "product",
+      "blurb": "Memory stick: cyan card, chrome chip, gold connector.",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          "CCCC",
+          "CLCC",
+          "CCCC",
+          "A.AA"
+        ]
+      },
+      "wordmark": [
+        [
+          "disco",
+          "W"
+        ],
+        [
+          "module",
+          "C"
+        ]
+      ]
+    },
+    {
+      "id": "doctor",
+      "kind": "module",
+      "blurb": "Green cross, red heart, white glint.",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          ".GG.",
+          "GWRG",
+          "GRRG",
+          ".GG."
+        ]
+      },
+      "wordmark": [
+        [
+          "doctor",
+          "W"
+        ]
+      ]
+    },
+    {
+      "id": "status",
+      "kind": "module",
+      "blurb": "Redstone torch; lit means up.",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          ".RW.",
+          ".RR.",
+          ".DD.",
+          ".DD."
+        ]
+      },
+      "wordmark": [
+        [
+          "status",
+          "W"
+        ]
+      ]
+    },
+    {
+      "id": "geyser",
+      "kind": "module",
+      "blurb": "White crown, cyan spray, blue column.",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          "CWWC",
+          ".BB.",
+          ".BB.",
+          "BBBB"
+        ]
+      },
+      "wordmark": [
+        [
+          "geyser",
+          "W"
+        ]
+      ]
+    },
+    {
+      "id": "steambridge",
+      "kind": "module",
+      "blurb": "steamclient rotated 180: violet, one chrome seed.",
+      "tile": {
+        "type": "counterpart",
+        "of": "steamclient",
+        "transform": "rotate180",
+        "substitute": {
+          "S": "v",
+          "L": "V",
+          "W": "W",
+          "V": "L"
+        },
+        "shade": "verbatim"
+      },
+      "wordmark": [
+        [
+          "steambridge",
+          "W"
+        ]
+      ]
+    },
+    {
+      "id": "playit",
+      "kind": "module",
+      "blurb": "Tunnel: magenta arch, light at the end, gold track.",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          "MMMM",
+          "M.WM",
+          "M..M",
+          "MAAM"
+        ]
+      },
+      "wordmark": [
+        [
+          "playit",
+          "W"
+        ]
+      ]
+    },
+    {
+      "id": "exporter",
+      "kind": "module",
+      "blurb": "Orange arrow off a chrome tray, glint on the tip.",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          ".OW.",
+          "OOOO",
+          ".OO.",
+          "LLLL"
+        ]
+      },
+      "wordmark": [
+        [
+          "exporter",
+          "W"
+        ]
+      ]
+    },
+    {
+      "id": "steamclient",
+      "kind": "client",
+      "blurb": "Chrome wisp, one violet seed; counterpart of steambridge.",
+      "tile": {
+        "type": "pixmap",
+        "shade": "verbatim",
+        "rows": [
+          ".SLW",
+          "SLW.",
+          "SLW.",
+          "VW.."
+        ]
+      },
+      "wordmark": [
+        [
+          "steamclient",
+          "W"
+        ]
+      ]
+    },
+    {
+      "id": "somefuturemod",
+      "kind": "module",
+      "demo": true,
+      "blurb": "Fallback demo: unauthored tile, 4x4 identicon from sha256(id).",
+      "tile": {
+        "type": "identicon",
+        "shade": "checker"
+      },
+      "wordmark": [
+        [
+          "somefuturemod",
+          "W"
+        ]
+      ]
+    }
+  ],
+  "lockup": {
+    "canvas": 400,
+    "frameTop": 73,
+    "bodyStrokeOpacity": 0.3,
+    "beams": [
+      {
+        "px": "M",
+        "cx": 24,
+        "cy": 14,
+        "r": 95,
+        "opacity": 0.5
+      },
+      {
+        "px": "C",
+        "cx": 136,
+        "cy": 28,
+        "r": 95,
+        "opacity": 0.45
+      }
+    ],
+    "wordmark": {
+      "baseline": 361,
+      "fontSize": 67,
+      "advance": 35.8,
+      "maxWidth": 340,
+      "fontFamily": "'JetBrains Mono','Cascadia Code',ui-monospace,Menlo,Consolas,monospace",
+      "fontWeight": 700
+    },
+    "source": "layout measured from the source lockup PNG (1785058600046_image.png)"
+  },
+  "ramps": {
+    "L": [
+      "#b3b0c7",
+      "#908da8"
+    ],
+    "G": [
+      "#55aa55",
+      "#3c7f3c"
+    ],
+    "M": [
+      "#e05fc0",
+      "#af4294"
+    ],
+    "C": [
+      "#4fc9e8",
+      "#349bb5"
+    ],
+    "V": [
+      "#8962e7",
+      "#6544b4"
+    ],
+    "A": [
+      "#f0b429",
+      "#bb8914"
+    ],
+    "O": [
+      "#ef8b3a",
+      "#ba6622"
+    ],
+    "B": [
+      "#5b8def",
+      "#3e68ba"
+    ],
+    "T": [
+      "#35c4b5",
+      "#20998c"
+    ],
+    "R": [
+      "#ef5e70",
+      "#ba404f"
+    ],
+    "W": [
+      "#eceaf4",
+      "#b8b6be"
+    ],
+    "D": [
+      "#8b5e3c",
+      "#6c472a"
+    ],
+    "S": [
+      "#908da8",
+      "#6f6c83"
+    ]
+  },
+  "shading": {
+    "rule": "two-structures",
+    "note": "Every sprite renders as exactly four hexes. The majority key (the material) dithers by parity: (x+y) odd -> hi, even -> lo. Two minority keys render flat at hi; a single minority key dithers as a second material. Identicon fallbacks derive a material plus a mirrored accent pair from the hash."
+  }
+}
