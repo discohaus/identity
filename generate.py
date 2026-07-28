@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """discohaus identity generator.
 
-Reads params.json and emits, for every entity:
+Reads params.json and writes, per entity:
 
-  assets/<id>/chip.svg     framed mark: chip + pins + sprite   (viewBox 160x160)
-  assets/<id>/avatar.svg   full-bleed: ink canvas, sprite, two corner beams (128x128)
-  assets/<id>/favicon.svg  sprite only, for 16px tabs
-  assets/<id>/lockup.svg   square lockup with wordmark (400x400)
+  assets/<id>/chip.svg     160x160, framed
+  assets/<id>/avatar.svg   128x128, full bleed
+  assets/<id>/favicon.svg  sprite only
+  assets/<id>/lockup.svg   400x400, with wordmark
 
-plus README.md, which previews them all. Output is a pure function of
-params.json; the grid and shading rules live there.
+plus README.md. Output depends only on params.json.
 """
 
 import hashlib
@@ -213,8 +212,7 @@ def svg_avatar(entity, params):
 
 
 def svg_lockup(entity, params):
-    """Square lockup: chip over wordmark on a vignetted canvas; layout
-    constants measured from the source asset (params.lockup.source)."""
+    """Chip over wordmark on a vignetted canvas."""
     lk = params["lockup"]
     tokens = params["tokens"]
     px = params["pixels"]
@@ -279,8 +277,7 @@ def svg_lockup(entity, params):
         f"{cell_rects(cells, (fx + origin, fy + origin), cell_px)}</g>"
     )
 
-    # wordmark: monospace flow pinned with textLength, so layout is
-    # deterministic regardless of which font in the stack resolves
+    # wordmark: monospace flow pinned with textLength, so layout is deterministic regardless of which font in the stack resolves
     wm = lk["wordmark"]
     name_len = sum(len(t) for t, _ in entity["wordmark"])
     adv = min(wm["advance"], wm["maxWidth"] / name_len)
@@ -329,17 +326,12 @@ def readme_md(params):
 
 # {title}
 
-Branding for the Disco app ecosystem. Every mark in [`assets/`](assets/) is
-generated from [`params.json`](params.json):
+Marks for the Disco ecosystem. Everything in [`assets/`](assets/) is generated
+from [`params.json`](params.json):
 
 ```
 python3 generate.py
 ```
-
-Each entity gets four marks in `assets/<id>/`: `chip.svg` (framed mark,
-160x160), `avatar.svg` (full-bleed, 128x128), `lockup.svg` (square lockup
-with wordmark, 400x400), and `favicon.svg` (sprite only - what survives in
-a 16px tab).
 
 <p align="center"><img src="assets/discohaus/lockup.svg" width="256" alt="discohaus lockup"></p>
 
@@ -348,12 +340,6 @@ a 16px tab).
 | entity | chip | avatar | lockup | favicon | |
 | --- | :-: | :-: | :-: | :-: | --- |
 {rows}
-
-## The rule
-
-{params["grid"]["rule"]}
-
-{params["shading"]["note"]}
 """
 
 

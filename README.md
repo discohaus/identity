@@ -2,17 +2,12 @@
 
 # discohaus identity
 
-Branding for the Disco app ecosystem. Every mark in [`assets/`](assets/) is
-generated from [`params.json`](params.json):
+Marks for the Disco ecosystem. Everything in [`assets/`](assets/) is generated
+from [`params.json`](params.json):
 
 ```
 python3 generate.py
 ```
-
-Each entity gets four marks in `assets/<id>/`: `chip.svg` (framed mark,
-160x160), `avatar.svg` (full-bleed, 128x128), `lockup.svg` (square lockup
-with wordmark, 400x400), and `favicon.svg` (sprite only - what survives in
-a 16px tab).
 
 <p align="center"><img src="assets/discohaus/lockup.svg" width="256" alt="discohaus lockup"></p>
 
@@ -32,9 +27,3 @@ a 16px tab).
 | **exporter**<br><sub>module</sub> | <img src="assets/exporter/chip.svg" width="96" alt="exporter chip"> | <img src="assets/exporter/avatar.svg" width="96" alt="exporter avatar"> | <img src="assets/exporter/lockup.svg" width="96" alt="exporter lockup"> | <img src="assets/exporter/favicon.svg" width="32" alt="exporter favicon"> | Orange arrow off a chrome tray, glint on the tip. |
 | **steamclient**<br><sub>client</sub> | <img src="assets/steamclient/chip.svg" width="96" alt="steamclient chip"> | <img src="assets/steamclient/avatar.svg" width="96" alt="steamclient avatar"> | <img src="assets/steamclient/lockup.svg" width="96" alt="steamclient lockup"> | <img src="assets/steamclient/favicon.svg" width="32" alt="steamclient favicon"> | Chrome wisp, one violet seed; counterpart of steambridge. |
 | **somefuturemod**<br><sub>fallback demo</sub> | <img src="assets/somefuturemod/chip.svg" width="96" alt="somefuturemod chip"> | <img src="assets/somefuturemod/avatar.svg" width="96" alt="somefuturemod avatar"> | <img src="assets/somefuturemod/lockup.svg" width="96" alt="somefuturemod lockup"> | <img src="assets/somefuturemod/favicon.svg" width="32" alt="somefuturemod favicon"> | Fallback demo: unauthored tile, 4x4 identicon from sha256(id). |
-
-## The rule
-
-Every sprite is an NxN grid of cells, N <= 5. Every cell is 2 units. Rendered size = 2N units, centered. N=4 fills the 8-unit slot; N=3 centers with a 1-unit margin; N=5 is reserved for the org ball, which overflows the slot by exactly 1 unit per side.
-
-Every sprite renders as exactly four hexes. The majority key (the material) dithers by parity: (x+y) odd -> hi, even -> lo. Two minority keys render flat at hi; a single minority key dithers as a second material. Identicon fallbacks derive a material plus a mirrored accent pair from the hash.

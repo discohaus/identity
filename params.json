@@ -5,8 +5,7 @@
     "frameUnits": 16,
     "slotUnits": 8,
     "cellUnits": 2,
-    "maxCells": 5,
-    "rule": "Every sprite is an NxN grid of cells, N <= 5. Every cell is 2 units. Rendered size = 2N units, centered. N=4 fills the 8-unit slot; N=3 centers with a 1-unit margin; N=5 is reserved for the org ball, which overflows the slot by exactly 1 unit per side."
+    "maxCells": 5
   },
   "tokens": {
     "ink": "#26242e",
@@ -69,7 +68,6 @@
       "id": "discohaus",
       "kind": "org",
       "blurb": "5x5 mirror ball: chrome with magenta and cyan facets.",
-      "source": "extracted by extract.py from the concept-art avatar",
       "tile": {
         "type": "pixmap",
         "rows": [
@@ -96,7 +94,6 @@
       "id": "discopanel",
       "kind": "product",
       "blurb": "Grass block: green cap, jagged boundary row, two-tone dirt.",
-      "source": "v1/v2 checker extracted by extract.py; grass-side form since v3",
       "tile": {
         "type": "pixmap",
         "shade": "checker",
@@ -361,8 +358,7 @@
       "maxWidth": 340,
       "fontFamily": "'JetBrains Mono','Cascadia Code',ui-monospace,Menlo,Consolas,monospace",
       "fontWeight": 700
-    },
-    "source": "layout measured from the source lockup PNG (1785058600046_image.png)"
+    }
   },
   "ramps": {
     "L": [
@@ -417,9 +413,5 @@
       "#908da8",
       "#6f6c83"
     ]
-  },
-  "shading": {
-    "rule": "two-structures",
-    "note": "Every sprite renders as exactly four hexes. The majority key (the material) dithers by parity: (x+y) odd -> hi, even -> lo. Two minority keys render flat at hi; a single minority key dithers as a second material. Identicon fallbacks derive a material plus a mirrored accent pair from the hash."
   }
 }
