@@ -28,6 +28,8 @@ PIN_W, PIN_L, PIN_RX = 12, 20, 4
 AVATAR = 128
 AVATAR_U = 8                              # px per grid unit in avatar.svg
 
+CDN = "https://cdn.jsdelivr.net/gh/discohaus/identity@latest/assets"
+
 
 def load_params():
     with open(ROOT / "params.json", "r", encoding="utf-8") as f:
@@ -315,10 +317,11 @@ def readme_md(params):
         eid = e["id"]
         kind = "fallback demo" if e.get("demo") else e["kind"]
         cells = " | ".join(
-            f'<img src="assets/{eid}/{name}.svg" width="{w}" alt="{eid} {name}">'
+            f'<a href="{CDN}/{eid}/{name}.svg">'
+            f'<img src="assets/{eid}/{name}.svg" width="{w}" alt="{eid} {name}"></a>'
             for name, w in (("chip", 96), ("avatar", 96), ("lockup", 96), ("favicon", 32))
         )
-        return f"| **{eid}**<br><sub>{kind}</sub> | {cells} |"
+        return f"| **{eid}**<br><sub>{kind}</sub> | {cells} | `{CDN}/{eid}/` |"
 
     rows = "\n".join(row(e) for e in params["entities"])
     title = params["system"].replace("-", " ")
@@ -337,8 +340,8 @@ python3 generate.py
 
 ## Marks
 
-| entity | chip | avatar | lockup | favicon |
-| --- | :-: | :-: | :-: | :-: |
+| entity | chip | avatar | lockup | favicon | cdn |
+| --- | :-: | :-: | :-: | :-: | --- |
 {rows}
 """
 
