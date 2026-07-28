@@ -67,7 +67,6 @@
     {
       "id": "discohaus",
       "kind": "org",
-      "blurb": "5x5 mirror ball: chrome with magenta and cyan facets.",
       "tile": {
         "type": "pixmap",
         "rows": [
@@ -93,7 +92,6 @@
     {
       "id": "discopanel",
       "kind": "product",
-      "blurb": "Grass block: green cap, jagged boundary row, two-tone dirt.",
       "tile": {
         "type": "pixmap",
         "shade": "checker",
@@ -118,7 +116,6 @@
     {
       "id": "discoruntime",
       "kind": "product",
-      "blurb": "Powered rail: gold, wood ties, redstone.",
       "tile": {
         "type": "pixmap",
         "shade": "checker",
@@ -143,7 +140,6 @@
     {
       "id": "discomodule",
       "kind": "product",
-      "blurb": "Memory stick: cyan card, chrome chip, gold connector.",
       "tile": {
         "type": "pixmap",
         "shade": "checker",
@@ -168,7 +164,6 @@
     {
       "id": "doctor",
       "kind": "module",
-      "blurb": "Green cross, red heart, white glint.",
       "tile": {
         "type": "pixmap",
         "shade": "checker",
@@ -189,7 +184,6 @@
     {
       "id": "status",
       "kind": "module",
-      "blurb": "Redstone torch; lit means up.",
       "tile": {
         "type": "pixmap",
         "shade": "checker",
@@ -210,7 +204,6 @@
     {
       "id": "geyser",
       "kind": "module",
-      "blurb": "White crown, cyan spray, blue column.",
       "tile": {
         "type": "pixmap",
         "shade": "checker",
@@ -231,7 +224,6 @@
     {
       "id": "steambridge",
       "kind": "module",
-      "blurb": "steamclient rotated 180: violet, one chrome seed.",
       "tile": {
         "type": "counterpart",
         "of": "steamclient",
@@ -254,7 +246,6 @@
     {
       "id": "playit",
       "kind": "module",
-      "blurb": "Tunnel: magenta arch, light at the end, gold track.",
       "tile": {
         "type": "pixmap",
         "shade": "checker",
@@ -275,7 +266,6 @@
     {
       "id": "exporter",
       "kind": "module",
-      "blurb": "Orange arrow off a chrome tray, glint on the tip.",
       "tile": {
         "type": "pixmap",
         "shade": "checker",
@@ -296,7 +286,6 @@
     {
       "id": "steamclient",
       "kind": "client",
-      "blurb": "Chrome wisp, one violet seed; counterpart of steambridge.",
       "tile": {
         "type": "pixmap",
         "shade": "verbatim",
@@ -318,7 +307,6 @@
       "id": "somefuturemod",
       "kind": "module",
       "demo": true,
-      "blurb": "Fallback demo: unauthored tile, 4x4 identicon from sha256(id).",
       "tile": {
         "type": "identicon",
         "shade": "checker"

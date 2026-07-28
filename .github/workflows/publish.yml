@@ -1,0 +1,44 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate
+        run: python3 generate.py
+
+      - name: Check output is committed
+        run: |
+          if [ -n "$(git status --porcelain -- assets README.md)" ]; then
+            echo "::error::stale output - run 'python3 generate.py' and commit"
+            git status --short -- assets README.md
+            exit 1
+          fi
+
+      - name: Purge jsDelivr @latest
+        run: |
+          python3 - > paths.json <<'PY'
+          import json
+          p = json.load(open("params.json"))
+          repo = "${{ github.repository }}"
+          print(json.dumps({"path": [
+              f"/gh/{repo}@latest/assets/{e['id']}/{m}.svg"
+              for e in p["entities"]
+              for m in ("chip", "avatar", "lockup", "favicon")
+          ]}))
+          PY
+          curl -fsS -X POST https://purge.jsdelivr.net/ \
+            -H 'Content-Type: application/json' --data @paths.json
