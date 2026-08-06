@@ -284,6 +284,26 @@
       ]
     },
     {
+      "id": "lobby",
+      "kind": "module",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          ".VV.",
+          "VMCV",
+          "VCMV",
+          "VVVV"
+        ]
+      },
+      "wordmark": [
+        [
+          "lobby",
+          "W"
+        ]
+      ]
+    },
+    {
       "id": "steamclient",
       "kind": "client",
       "tile": {
