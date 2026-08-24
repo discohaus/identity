@@ -304,6 +304,26 @@
       ]
     },
     {
+      "id": "bot",
+      "kind": "module",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          "T...",
+          "TWWT",
+          "TWWT",
+          "...T"
+        ]
+      },
+      "wordmark": [
+        [
+          "bot",
+          "W"
+        ]
+      ]
+    },
+    {
       "id": "steamclient",
       "kind": "client",
       "tile": {
