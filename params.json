@@ -1,5 +1,5 @@
 {
-  "version": 10,
+  "version": 11,
   "system": "discohaus-identity",
   "grid": {
     "frameUnits": 16,
@@ -166,7 +166,7 @@
       ]
     },
     {
-      "id": "discotoken",
+      "id": "discocoin",
       "kind": "currency",
       "tile": {
         "type": "counterpart",
@@ -185,6 +185,39 @@
           "DISCO",
           "W"
         ]
+      ],
+      "marks": [
+        "banner"
+      ],
+      "exports": [
+        {
+          "mark": "avatar",
+          "format": "png",
+          "size": 1024
+        },
+        {
+          "mark": "chip",
+          "format": "png",
+          "size": 512
+        },
+        {
+          "mark": "lockup",
+          "format": "png",
+          "size": 1024
+        },
+        {
+          "mark": "banner",
+          "format": "png",
+          "size": 1500
+        },
+        {
+          "mark": "banner",
+          "format": "png",
+          "size": [
+            1280,
+            640
+          ]
+        }
       ]
     },
     {
@@ -389,10 +422,21 @@
       "baseline": 361,
       "fontSize": 67,
       "advance": 35.8,
+      "glyphAdvance": 0.6,
       "maxWidth": 340,
       "fontFamily": "'JetBrains Mono','Cascadia Code',ui-monospace,Menlo,Consolas,monospace",
       "fontWeight": 700
     }
+  },
+  "banner": {
+    "canvas": [
+      1500,
+      500
+    ],
+    "frameHeight": 0.6,
+    "gapUnits": 4,
+    "sidePadding": 0.06,
+    "capHeight": 0.73
   },
   "ramps": {
     "L": [
