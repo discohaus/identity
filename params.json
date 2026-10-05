@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "system": "discohaus-identity",
   "grid": {
     "frameUnits": 16,
@@ -60,6 +60,10 @@
     },
     "client": {
       "frame": "cartridge",
+      "pins": false
+    },
+    "currency": {
+      "frame": "coin",
       "pins": false
     }
   },
@@ -158,6 +162,28 @@
         [
           "module",
           "C"
+        ]
+      ]
+    },
+    {
+      "id": "discotoken",
+      "kind": "currency",
+      "tile": {
+        "type": "counterpart",
+        "of": "discohaus",
+        "substitute": {
+          "L": "A"
+        },
+        "shade": "checker"
+      },
+      "wordmark": [
+        [
+          "$",
+          "A"
+        ],
+        [
+          "DISCO",
+          "W"
         ]
       ]
     },

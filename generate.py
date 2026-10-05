@@ -25,6 +25,7 @@ BODY_XY, BODY_WH = 2 * U, 12 * U          # body rect 20,20 120x120
 BODY_RX = 24
 PIN_CENTERS = [44, 68, 92, 116]           # 4 pins per side
 PIN_W, PIN_L, PIN_RX = 12, 20, 4
+COIN_R = 7 * U                            # coin disc radius, frame struck round at one unit inset
 AVATAR = 128
 AVATAR_U = 8                              # px per grid unit in avatar.svg
 
@@ -40,7 +41,7 @@ def load_params():
 def sprite_cells(entity, params):
     """Resolve an entity's tile into (n_cells, cell_units, [(cx, cy, color)])."""
     spec = entity["tile"]
-    px = params["pixels"]
+    px = {**params["pixels"], **spec.get("palette", {})}
     grid_cfg = params["grid"]
     cell = grid_cfg["cellUnits"]
     max_cells = grid_cfg["maxCells"]
@@ -91,9 +92,10 @@ def sprite_cells(entity, params):
         raise ValueError(f"unknown tile type: {spec['type']}")
 
     n = len(rows)
+    org_id = next(o["id"] for o in params["entities"] if o["kind"] == "org")
     assert n <= max_cells, f"{entity['id']}: {n}x{n} exceeds maxCells {max_cells}"
-    assert n < max_cells or entity["kind"] == "org", \
-        f"{entity['id']}: {max_cells}x{max_cells} is reserved for the org"
+    assert n < max_cells or entity["kind"] == "org" or spec.get("of") == org_id, \
+        f"{entity['id']}: {max_cells}x{max_cells} is reserved for the org and counterparts of its ball"
 
     if shade == "checker":
         seq = [ch for row in rows for ch in row if px.get(ch)]
@@ -163,10 +165,13 @@ def svg_chip(entity, params):
             pins.append(f'<rect x="{FRAME - 6 - PIN_L}" y="{c - PIN_W // 2}" width="{PIN_L}" height="{PIN_W}" rx="{PIN_RX}"/>')
         parts.append(f'<g fill="{pin}">{"".join(pins)}</g>')
 
-    parts.append(
-        f'<rect x="{BODY_XY}" y="{BODY_XY}" width="{BODY_WH}" height="{BODY_WH}" '
-        f'rx="{BODY_RX}" fill="{ink}"/>'
-    )
+    if kind["frame"] == "coin":
+        parts.append(f'<circle cx="{FRAME // 2}" cy="{FRAME // 2}" r="{COIN_R}" fill="{ink}"/>')
+    else:
+        parts.append(
+            f'<rect x="{BODY_XY}" y="{BODY_XY}" width="{BODY_WH}" height="{BODY_WH}" '
+            f'rx="{BODY_RX}" fill="{ink}"/>'
+        )
     if kind["frame"] == "cartridge":
         parts.append(
             f'<rect x="{BODY_XY + 7}" y="{BODY_XY + 7}" width="{BODY_WH - 14}" '
@@ -182,11 +187,12 @@ def svg_chip(entity, params):
 
 
 def svg_avatar(entity, params):
-    """Full-bleed: no pins, ink canvas, magenta NW / cyan SE corner glows."""
+    """Full-bleed: no pins, ink canvas, magenta NW / cyan SE corner glows, coins cut round."""
     tokens = params["tokens"]
+    kind = params["kinds"][entity["kind"]]
     n, cell, cells = sprite_cells(entity, params)
     ink = tokens["ink"]
-    rx = round(AVATAR * tokens["avatarRadiusRatio"])
+    rx = AVATAR // 2 if kind["frame"] == "coin" else round(AVATAR * tokens["avatarRadiusRatio"])
     op = tokens["beamOpacity"]
     eid = entity["id"]
 
@@ -214,7 +220,7 @@ def svg_avatar(entity, params):
 
 
 def svg_lockup(entity, params):
-    """Chip over wordmark on a vignetted canvas."""
+    """Mark over wordmark on a vignetted canvas."""
     lk = params["lockup"]
     tokens = params["tokens"]
     px = params["pixels"]
@@ -224,6 +230,11 @@ def svg_lockup(entity, params):
     S = lk["canvas"]
     fx, fy = (S - FRAME) // 2, lk["frameTop"]
     ink, pin = tokens["ink"], tokens["pin"]
+    if kind["frame"] == "coin":
+        body = f'<circle cx="{fx + FRAME // 2}" cy="{fy + FRAME // 2}" r="{COIN_R}"'
+    else:
+        body = (f'<rect x="{fx + BODY_XY}" y="{fy + BODY_XY}" width="{BODY_WH}" '
+                f'height="{BODY_WH}" rx="{BODY_RX}"')
 
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {S} {S}" '
@@ -232,8 +243,7 @@ def svg_lockup(entity, params):
         f'<radialGradient id="vg-{eid}" gradientUnits="userSpaceOnUse" cx="{S // 2}" cy="{int(S * 0.45)}" r="{int(S * 0.75)}">'
         f'<stop offset="0" stop-color="{tokens["lockupBg"]}"/>'
         f'<stop offset="1" stop-color="{tokens["lockupVignette"]}"/></radialGradient>',
-        f'<clipPath id="lb-{eid}"><rect x="{fx + BODY_XY}" y="{fy + BODY_XY}" '
-        f'width="{BODY_WH}" height="{BODY_WH}" rx="{BODY_RX}"/></clipPath>',
+        f'<clipPath id="lb-{eid}">{body}/></clipPath>',
     ]
     beam_color = {"M": tokens["beamMagenta"], "C": tokens["beamCyan"]}
     for i, bm in enumerate(lk["beams"]):
@@ -256,8 +266,7 @@ def svg_lockup(entity, params):
         parts.append(f'<g fill="{pin}">{"".join(pins)}</g>')
 
     parts.append(
-        f'<rect x="{fx + BODY_XY}" y="{fy + BODY_XY}" width="{BODY_WH}" height="{BODY_WH}" '
-        f'rx="{BODY_RX}" fill="{ink}" stroke="{pin}" stroke-opacity="{lk["bodyStrokeOpacity"]}" stroke-width="2"/>'
+        f'{body} fill="{ink}" stroke="{pin}" stroke-opacity="{lk["bodyStrokeOpacity"]}" stroke-width="2"/>'
     )
     if kind["frame"] == "cartridge":
         parts.append(
@@ -265,11 +274,9 @@ def svg_lockup(entity, params):
             f'height="{BODY_WH - 14}" rx="{BODY_RX - 7}" fill="none" '
             f'stroke="{pin}" stroke-width="2"/>'
         )
-    beams = "".join(
-        f'<rect x="{fx + BODY_XY}" y="{fy + BODY_XY}" width="{BODY_WH}" height="{BODY_WH}" '
-        f'fill="url(#lg-{eid}-{i})"/>'
-        for i in range(len(lk["beams"]))
-    )
+    beam_area = body if kind["frame"] == "coin" else (
+        f'<rect x="{fx + BODY_XY}" y="{fy + BODY_XY}" width="{BODY_WH}" height="{BODY_WH}"')
+    beams = "".join(f'{beam_area} fill="url(#lg-{eid}-{i})"/>' for i in range(len(lk["beams"])))
     parts.append(f'<g clip-path="url(#lb-{eid})">{beams}</g>')
 
     cell_px = cell * U
@@ -279,7 +286,7 @@ def svg_lockup(entity, params):
         f"{cell_rects(cells, (fx + origin, fy + origin), cell_px)}</g>"
     )
 
-    # wordmark: monospace flow pinned with textLength, so layout is deterministic regardless of which font in the stack resolves
+    # wordmark pinned with textLength so layout holds whichever font in the stack resolves
     wm = lk["wordmark"]
     name_len = sum(len(t) for t, _ in entity["wordmark"])
     adv = min(wm["advance"], wm["maxWidth"] / name_len)
