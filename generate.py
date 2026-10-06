@@ -8,7 +8,7 @@ Reads params.json and writes, per entity:
   assets/<id>/favicon.svg  sprite only
   assets/<id>/lockup.svg   400x400, with wordmark
   assets/<id>/banner.svg   wide, mark beside wordmark
-  dist/<id>/<mark>-<w>.<format> or <mark>-<w>x<h>.<format>
+  assets/<id>/<prefix>-<w>.<format>   sized export, <w>x<h>,
 
 plus README.md. Output depends only on params.json.
 """
@@ -17,12 +17,12 @@ import hashlib
 import io
 import json
 import pathlib
+import re
 import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent
 ASSETS = ROOT / "assets"
-DIST = ROOT / "dist"
 
 U = 10                                    # px per grid unit in chip.svg
 FRAME = 16 * U                            # 160
@@ -405,16 +405,32 @@ FORMATS = {
 }
 
 
-def write_export(entity, params, export):
-    mark, fmt = export["mark"], export["format"]
-    assert mark in MARKS, f"{entity['id']}: unknown export mark {mark!r}, use one of {sorted(MARKS)}"
-    assert fmt in FORMATS, f"{entity['id']}: unknown export format {fmt!r}, use one of {sorted(FORMATS)}"
+def export_spec(entity, params, export):
+    """Validated (filename, mark, format, width, height) of one export entry"""
+    eid, mark, fmt = entity["id"], export["mark"], export["format"]
+    assert mark in MARKS, f"{eid}: unknown export mark {mark!r}, use one of {sorted(MARKS)}"
+    assert fmt in FORMATS, f"{eid}: unknown export format {fmt!r}, use one of {sorted(FORMATS)}"
+    prefix = export.get("prefix", mark)
+    assert re.fullmatch(r"[a-z0-9][a-z0-9_-]*", prefix), \
+        f"{eid}: export prefix {prefix!r} must be lowercase letters, digits, - or _"
     w, h = export_size(mark, export["size"], params)
+    name = f"{prefix}-{w}.{fmt}" if w == h else f"{prefix}-{w}x{h}.{fmt}"
+    return name, mark, fmt, w, h
+
+
+def entity_files(entity, params):
+    """Every filename written under assets/<id>, svg marks then exports, no two alike"""
+    names = [f"{m}.svg" for m in entity_marks(entity)]
+    names += [export_spec(entity, params, x)[0] for x in entity.get("exports", ())]
+    dupes = sorted({n for n in names if names.count(n) > 1})
+    assert not dupes, f"{entity['id']}: exports collide on {dupes}, change a prefix or size"
+    return names
+
+
+def write_export(entity, params, export):
+    name, mark, fmt, w, h = export_spec(entity, params, export)
     svg = MARKS[mark](entity, params, (w, h))
-    d = DIST / entity["id"]
-    d.mkdir(parents=True, exist_ok=True)
-    stem = f"{mark}-{w}" if w == h else f"{mark}-{w}x{h}"
-    (d / f"{stem}.{fmt}").write_bytes(FORMATS[fmt](svg, (w, h)))
+    (ASSETS / entity["id"] / name).write_bytes(FORMATS[fmt](svg, (w, h)))
 
 
 # ------------------------------------------------------------------- readme --
@@ -462,18 +478,17 @@ def main():
     params = load_params()
     verify_canon(params)
     ASSETS.mkdir(exist_ok=True)
-    n_marks = n_exports = 0
+    n_files = 0
     for e in params["entities"]:
+        n_files += len(entity_files(e, params))
         d = ASSETS / e["id"]
         d.mkdir(exist_ok=True)
         for mark in entity_marks(e):
             (d / f"{mark}.svg").write_text(MARKS[mark](e, params) + "\n", encoding="utf-8")
-            n_marks += 1
         for export in e.get("exports", ()):
             write_export(e, params, export)
-            n_exports += 1
     (ROOT / "README.md").write_text(readme_md(params), encoding="utf-8")
-    print(f"generated {n_marks} marks -> {ASSETS} + README.md, {n_exports} exports -> {DIST}")
+    print(f"generated {n_files} files -> {ASSETS} + README.md")
 
 
 if __name__ == "__main__":

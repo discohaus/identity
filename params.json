@@ -196,6 +196,12 @@
           "size": 1024
         },
         {
+          "mark": "avatar",
+          "format": "png",
+          "size": 512,
+          "prefix": "logo"
+        },
+        {
           "mark": "chip",
           "format": "png",
           "size": 512

@@ -26,11 +26,11 @@ jobs:
       - name: Generate
         run: python3 generate.py
 
-      - name: Check output is committed
+      - name: Check marks and README are committed
         run: |
-          if [ -n "$(git status --porcelain -- assets README.md)" ]; then
+          if [ -n "$(git status --porcelain -- README.md 'assets/*/*.svg')" ]; then
             echo "::error::stale output - run 'python3 generate.py' and commit"
-            git status --short -- assets README.md
+            git status --short -- README.md 'assets/*/*.svg'
             exit 1
           fi
 
@@ -38,12 +38,13 @@ jobs:
         run: |
           python3 - > paths.json <<'PY'
           import json
-          from generate import load_params, entity_marks
+          from generate import load_params, entity_files
+          params = load_params()
           repo = "${{ github.repository }}"
           print(json.dumps({"path": [
-              f"/gh/{repo}@latest/assets/{e['id']}/{m}.svg"
-              for e in load_params()["entities"]
-              for m in entity_marks(e)
+              f"/gh/{repo}@latest/assets/{e['id']}/{name}"
+              for e in params["entities"]
+              for name in entity_files(e, params)
           ]}))
           PY
           curl -fsS -X POST https://purge.jsdelivr.net/ \
