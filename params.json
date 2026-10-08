@@ -118,6 +118,30 @@
       ]
     },
     {
+      "id": "discodemo",
+      "kind": "product",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          "LLLL",
+          "LDLD",
+          "DDDD",
+          "DDDD"
+        ]
+      },
+      "wordmark": [
+        [
+          "disco",
+          "W"
+        ],
+        [
+          "demo",
+          "L"
+        ]
+      ]
+    },
+    {
       "id": "discoruntime",
       "kind": "product",
       "tile": {
@@ -386,6 +410,24 @@
           "steamclient",
           "W"
         ]
+      ]
+    },
+    {
+      "id": "go-rcon",
+      "kind": "product",
+      "tile": {
+        "type": "pixmap",
+        "shade": "flat",
+        "rows": [
+          "T...",
+          ".C..",
+          "C...",
+          "..CC"
+        ]
+      },
+      "wordmark": [
+        ["go-", "C"],
+        ["rcon", "W"]
       ]
     },
     {
