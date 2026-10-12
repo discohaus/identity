@@ -22,6 +22,7 @@
     "C": "#4fc9e8",
     "L": "#b3b0c7",
     "S": "#908da8",
+    "K": "#555366",
     "D": "#8b5e3c",
     "G": "#55aa55",
     "g": "#3c7f3c",
@@ -114,6 +115,30 @@
         [
           "panel",
           "G"
+        ]
+      ]
+    },
+    {
+      "id": "discodemo",
+      "kind": "product",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          "LLLL",
+          "LDLD",
+          "DDDD",
+          "DDDD"
+        ]
+      },
+      "wordmark": [
+        [
+          "disco",
+          "W"
+        ],
+        [
+          "demo",
+          "L"
         ]
       ]
     },
@@ -389,6 +414,30 @@
       ]
     },
     {
+      "id": "go-rcon",
+      "kind": "product",
+      "tile": {
+        "type": "pixmap",
+        "shade": "checker",
+        "rows": [
+          "TKK.",
+          ".CKK",
+          "CKK.",
+          ".KCC"
+        ]
+      },
+      "wordmark": [
+        [
+          "go-",
+          "C"
+        ],
+        [
+          "rcon",
+          "W"
+        ]
+      ]
+    },
+    {
       "id": "somefuturemod",
       "kind": "module",
       "demo": true,
@@ -496,6 +545,10 @@
     "S": [
       "#908da8",
       "#6f6c83"
+    ],
+    "K": [
+      "#555366",
+      "#414050"
     ]
   }
 }
